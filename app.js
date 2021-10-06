@@ -3,10 +3,12 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-let cors = require('cors')
+const cors = require('cors')
+const io = require('socket.io')(5001)
 
 var indexRouter = require('./routes/index');
 let enviroRouter = require('./routes/enviroment');
+const { Socket } = require('socket.io');
 var app = express();
 
 // view engine setup
@@ -38,5 +40,18 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+io.on('connection', socket => {
+  console.log(socket.id)
+  io.fetchSockets()
+  .then(res => console.log(res.length))
+  
+  socket.on('send-config', (message) => {
+    console.log(message)
+    socket.emit('config', message)
+  })
+})
+
+
 
 module.exports = app;
