@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors())
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('../web_interface/build'))
 
 app.use('/', indexRouter);
 app.use('/enviroment', enviroRouter)
@@ -40,6 +41,10 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+})
 
 io.on('connection', socket => {
   console.log(socket.id)
