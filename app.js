@@ -46,9 +46,13 @@ io.on('connection', socket => {
   io.fetchSockets()
   .then(res => console.log(res.length))
   
-  socket.on('send-config', (message) => {
+  socket.on('select-lcd-display', (message) => {
     console.log(message)
-    socket.emit('config', message)
+    io.emit('lcd-config', message)
+  })
+
+  socket.on('recv', (message) => {
+    console.log(message)
   })
 })
 
