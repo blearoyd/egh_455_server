@@ -6,6 +6,7 @@ var logger = require('morgan');
 const cors = require('cors')
 const io = require('socket.io')(5001)
 
+const filepath = '../web_interface/build' //change ur filepath here
 
 let enviroRouter = require('./routes/enviroment');
 const { Socket } = require('socket.io');
@@ -42,7 +43,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.use((req, res) => {
-   res.sendFile(path.join(__dirname, '../web_interface/build/index.html'));
+   res.sendFile(path.join(__dirname, filepath, 'index.html'));
 })
 
 io.on('connection', socket => {
