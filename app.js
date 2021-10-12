@@ -6,7 +6,7 @@ var logger = require('morgan');
 const cors = require('cors')
 const io = require('socket.io')(5001)
 
-var indexRouter = require('./routes/index');
+
 let enviroRouter = require('./routes/enviroment');
 const { Socket } = require('socket.io');
 var app = express();
@@ -23,7 +23,6 @@ app.use(cors())
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static('../web_interface/build'))
 
-app.use('/', indexRouter);
 app.use('/enviroment', enviroRouter)
 
 // catch 404 and forward to error handler
@@ -43,7 +42,7 @@ app.use(function(err, req, res, next) {
 });
 
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+   res.sendFile(path.join(__dirname, '../web_interface/build/index.html'));
 })
 
 io.on('connection', socket => {
@@ -53,7 +52,7 @@ io.on('connection', socket => {
   
   socket.on('select-lcd-display', (message) => {
     console.log(message)
-    io.emit('lcd-config', message)
+    io.emit('lcd_config', message)
   })
 
   socket.on('recv', (message) => {
